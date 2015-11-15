@@ -1,5 +1,5 @@
 {
-  "version": "0.0.2",
+  "version": "0.0.3",
   "name": "process-promises",
   "description": "Node child processes as Q promises",
   "main": "lib/process-promises.js",
@@ -35,6 +35,7 @@
     "typescript": "^1.6.2"
   },
   "dependencies": {
-    "q": "^1.4.1"
+    "q": "^1.4.1",
+    "stack-trace": "0.0.9"
   }
 }

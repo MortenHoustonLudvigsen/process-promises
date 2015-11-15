@@ -11,18 +11,16 @@ export interface ExecOptions {
     killSignal?: string;
 }
 export interface ExecResult {
-    process: cp.ChildProcess;
-    stdout: Buffer;
-    stderr: Buffer;
+    stdout: string;
+    stderr: string;
 }
 export declare function exec(command: string, options?: ExecOptions): Q.Promise<ExecResult>;
 export declare function execFile(file: string, options?: ExecOptions): Q.Promise<ExecResult>;
 export declare function execFile(file: string, args?: string[], options?: ExecOptions): Q.Promise<ExecResult>;
 export interface SpawnOptions {
     cwd?: string;
-    stdio?: any;
-    custom?: any;
     env?: any;
+    stdio?: string | [string | NodeJS.WritableStream | number, string | NodeJS.ReadableStream | number, string | NodeJS.ReadableStream | number];
     detached?: boolean;
 }
 export interface SpawnResult {
@@ -31,10 +29,5 @@ export interface SpawnResult {
 }
 export declare function spawn(command: string, options?: SpawnOptions): Q.Promise<SpawnResult>;
 export declare function spawn(command: string, args?: string[], options?: SpawnOptions): Q.Promise<SpawnResult>;
-export interface ForkOptions {
-    cwd?: string;
-    env?: any;
-    encoding?: string;
-}
-export declare function fork(modulePath: string, options?: ForkOptions): Q.Promise<SpawnResult>;
-export declare function fork(modulePath: string, args?: string[], options?: ForkOptions): Q.Promise<SpawnResult>;
+export declare function fork(modulePath: string, options?: SpawnOptions): Q.Promise<SpawnResult>;
+export declare function fork(modulePath: string, args?: string[], options?: SpawnOptions): Q.Promise<SpawnResult>;

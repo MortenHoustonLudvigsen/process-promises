@@ -73,9 +73,15 @@ gulp.task('compile:test', ['compile'], function () {
     return tsc('test');
 });
 
-gulp.task('test', ['compile:test'], function () {
-    return gulp.src('build/test/**/*.js')
-        .pipe(jasmine());
+gulp.task('copy:test', ['compile:test'], function () {
+    return gulp
+        .src(['test/**/*.js'])
+        .pipe(gulp.dest('build/test'));
+});
+
+gulp.task('test', ['compile:test', 'copy:test'], function () {
+    return gulp.src('build/test/specs/**/*.js')
+        .pipe(jasmine({ verbose: true }));
 });
 
 gulp.task('dist', ['test'], function () {
