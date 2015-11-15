@@ -1,0 +1,38 @@
+{
+  "version": "0.0.1",
+  "name": "process-promises",
+  "description": "Node child processes as Q promises",
+  "main": "lib/process-promises.js",
+  "typings": "lib/process-promises.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "files": [
+    "process-promises.js",
+    "process-promises.d.ts"
+  ],
+  "keywords": [
+    "child process",
+    "promise"
+  ],
+  "author": "Morten Houston Ludvigsen",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MortenHoustonLudvigsen/process-promises.git"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-jasmine": "^2.2.1",
+    "gulp-rimraf": "^0.2.0",
+    "gulp-util": "^3.0.7",
+    "jasmine": "^2.3.2",
+    "resolve": "^1.1.6",
+    "split": "^1.0.0",
+    "tsd": "^0.6.5",
+    "typescript": "^1.6.2"
+  },
+  "dependencies": {
+    "q": "^1.4.1"
+  }
+}
