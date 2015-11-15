@@ -1,5 +1,5 @@
 {
-  "version": "0.0.1",
+  "version": "0.0.2",
   "name": "process-promises",
   "description": "Node child processes as Q promises",
   "main": "lib/process-promises.js",
@@ -8,8 +8,10 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "files": [
-    "process-promises.js",
-    "process-promises.d.ts"
+    "LICENSE",
+    "**/*.md",
+    "lib/**/*.js",
+    "lib/**/*.d.ts"
   ],
   "keywords": [
     "child process",
