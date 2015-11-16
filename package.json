@@ -1,5 +1,5 @@
 {
-  "version": "0.0.3",
+  "version": "0.0.4",
   "name": "process-promises",
   "description": "Node child processes as Q promises",
   "main": "lib/process-promises.js",
