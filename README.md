@@ -160,11 +160,6 @@ interface ExecFileOptions {
     killSignal?: string;
 }
 
-interface ExecProgress {
-    /** The executing process */
-    process?: cp.ChildProcess;
-}
-
 interface ExecResult {
     /** The standard output emitted from the process as a string */
     stdout: string;
