@@ -4,47 +4,46 @@ var gulp = require('gulp');
 var gutil = require('gulp-util');
 var rimraf = require('gulp-rimraf');
 var jasmine = require('gulp-jasmine');
-var Q = require('q');
-var resolve = require('resolve');
+var Promise = require('bluebird');
+var _resolve = require('resolve');
 var split = require('split');
 var spawn = require('child_process').spawn;
 
 function tsc(projectDir) {
     function locateTsc() {
-        var deferred = Q.defer();
-
-        resolve('typescript/lib/tsc', { basedir: __dirname }, function (err, res) {
-            if (err) {
-                deferred.reject(err);
-            } else {
-                deferred.resolve(res);
-            }
+        return new Promise(function (resolve, reject) {
+            _resolve('typescript/lib/tsc.js', { basedir: __dirname }, function (err, res) {
+                if (err) {
+                    reject(err);
+                } else {
+                    gutil.log('resolved tsc: ' + res);
+                    resolve(res);
+                }
+            });
         });
-
-        return deferred.promise;
     }
 
     function promiseTsc(tscPath) {
-        var deferred = Q.defer();
-        var childProcess = spawn('node', [tscPath, '-p', projectDir]);
+        gutil.log('tsc: ' + tscPath);
+        return new Promise(function (resolve, reject) {
+            var childProcess = spawn('node', [tscPath, '-p', projectDir]);
 
-        childProcess.stdout.pipe(split()).on('data', function (line) {
-            if (line) gutil.log(line);
+            childProcess.stdout.pipe(split()).on('data', function (line) {
+                if (line) gutil.log(line);
+            });
+
+            childProcess.stderr.pipe(split()).on('data', function (line) {
+                if (line) gutil.log('Error: ' + line);
+            });
+
+            childProcess.on('error', function (err) {
+                reject(err);
+            });
+
+            childProcess.on('close', function (exitCode) {
+                resolve(exitCode);
+            });
         });
-
-        childProcess.stderr.pipe(split()).on('data', function (line) {
-            if (line) gutil.log('Error: ' + line);
-        });
-
-        childProcess.on('error', function (err) {
-            deferred.reject(err);
-        });
-
-        childProcess.on('close', function (exitCode){
-            deferred.resolve(exitCode);
-        });
-
-        return deferred.promise;
     }
 
     return locateTsc().then(promiseTsc);
@@ -75,7 +74,7 @@ gulp.task('compile:test', ['compile'], function () {
 
 gulp.task('copy:test', ['compile:test'], function () {
     return gulp
-        .src(['test/**/*.js'])
+        .src(['test/**/*.js', 'test/**/*.json'])
         .pipe(gulp.dest('build/test'));
 });
 

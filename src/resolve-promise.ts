@@ -1,16 +1,14 @@
 import _resolve = require('resolve');
-import * as Q from 'q';
+import Promise = require('bluebird');
 
-export function resolve(id: string, opts: _resolve.ResolveOptions): Q.Promise<string> {
-	let deferred = Q.defer<string>();
-
-	_resolve(id, opts, (err, res) => {
-		if (err) {
-			deferred.reject(err);
-		} else {
-			deferred.resolve(res);
-		}
+export function resolve(id: string, opts: _resolve.ResolveOptions): Promise<string> {
+	return new Promise<string>((resolve, reject) => {
+		_resolve(id, opts, (err, res) => {
+			if (err) {
+				reject(err);
+			} else {
+				resolve(res);
+			}
+		});
 	});
-
-	return deferred.promise;
 }

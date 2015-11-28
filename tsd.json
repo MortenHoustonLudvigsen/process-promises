@@ -8,9 +8,6 @@
     "node/node.d.ts": {
       "commit": "aed176536a202b9a2475ce1989ea6d2d0226a185"
     },
-    "q/Q.d.ts": {
-      "commit": "efd40e67ff323f7147651bdbef03c03ead7b1675"
-    },
     "split/split.d.ts": {
       "commit": "aed176536a202b9a2475ce1989ea6d2d0226a185"
     },
@@ -19,6 +16,9 @@
     },
     "stack-trace/stack-trace.d.ts": {
       "commit": "aed176536a202b9a2475ce1989ea6d2d0226a185"
+    },
+    "bluebird/bluebird.d.ts": {
+      "commit": "fb2b3b1e068c9ff7d8f9b0851c08d37d96c95c38"
     }
   }
 }

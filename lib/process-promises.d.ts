@@ -1,5 +1,5 @@
 import * as cp from 'child_process';
-import * as Q from 'q';
+import { PromiseWithEvents } from './PromiseWithEvents';
 export interface ExecProgress {
     /** The executing process */
     process?: cp.ChildProcess;
@@ -37,10 +37,10 @@ export interface ExecResult {
  * Runs a command in a shell and buffers the output.
  * @param command {string} - The command
  * @param options {ExecOptions} - Options
- * @returns {Promise<ExecResult>}
+ * @returns {PromiseWithEvents<ExecResult>}
  * @see {@link https://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback}
  */
-export declare function exec(command: string, options?: ExecOptions): Q.Promise<ExecResult>;
+export declare function exec(command: string, options?: ExecOptions): PromiseWithEvents<ExecResult>;
 export interface ExecFileOptions {
     /** Current working directory of the child process */
     cwd?: string;
@@ -64,11 +64,11 @@ export interface ExecFileOptions {
  * @param file {string} - The file to execute
  * @param args {string[]} - List of string arguments
  * @param options {ExecFileOptions} - Options
- * @returns {Promise<ExecResult>}
+ * @returns {PromiseWithEvents<ExecResult>}
  * @see {@link https://nodejs.org/api/child_process.html#child_process_child_process_execfile_file_args_options_callback}
  */
-export declare function execFile(file: string, options?: ExecFileOptions): Q.Promise<ExecResult>;
-export declare function execFile(file: string, args?: string[], options?: ExecFileOptions): Q.Promise<ExecResult>;
+export declare function execFile(file: string, options?: ExecFileOptions): PromiseWithEvents<ExecResult>;
+export declare function execFile(file: string, args?: string[], options?: ExecFileOptions): PromiseWithEvents<ExecResult>;
 export interface SpawnOptions {
     /** Current working directory of the child process */
     cwd?: string;
@@ -106,8 +106,8 @@ export interface SpawnResult {
  * @returns {Promise<SpawnResult>}
  * @see {@link https://nodejs.org/api/child_process.html#child_process_child_process_spawn_command_args_options}
  */
-export declare function spawn(command: string, options?: SpawnOptions): Q.Promise<SpawnResult>;
-export declare function spawn(command: string, args?: string[], options?: SpawnOptions): Q.Promise<SpawnResult>;
+export declare function spawn(command: string, options?: SpawnOptions): PromiseWithEvents<SpawnResult>;
+export declare function spawn(command: string, args?: string[], options?: SpawnOptions): PromiseWithEvents<SpawnResult>;
 /**
  * Launches a new node process with the given module, with command line arguments in args. If
  * omitted, args defaults to an empty Array.
@@ -116,8 +116,8 @@ export declare function spawn(command: string, args?: string[], options?: SpawnO
  * @param modulePath {string} - The module to execute with node
  * @param args {string[]} - List of string arguments
  * @param options {SpawnOptions} - Options
- * @returns {Promise<SpawnResult>}
+ * @returns {PromiseWithEvents<SpawnResult>}
  * @see {@link https://nodejs.org/api/child_process.html#child_process_child_process_spawn_command_args_options}
  */
-export declare function fork(modulePath: string, options?: SpawnOptions): Q.Promise<SpawnResult>;
-export declare function fork(modulePath: string, args?: string[], options?: SpawnOptions): Q.Promise<SpawnResult>;
+export declare function fork(modulePath: string, options?: SpawnOptions): PromiseWithEvents<SpawnResult>;
+export declare function fork(modulePath: string, args?: string[], options?: SpawnOptions): PromiseWithEvents<SpawnResult>;

@@ -1,3 +1,3 @@
 import _resolve = require('resolve');
-import * as Q from 'q';
-export declare function resolve(id: string, opts: _resolve.ResolveOptions): Q.Promise<string>;
+import Promise = require('bluebird');
+export declare function resolve(id: string, opts: _resolve.ResolveOptions): Promise<string>;

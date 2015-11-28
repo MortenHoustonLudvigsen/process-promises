@@ -1,7 +1,7 @@
 {
-  "version": "0.0.4",
+  "version": "1.0.0",
   "name": "process-promises",
-  "description": "Node child processes as Q promises",
+  "description": "Node child processes as promises",
   "main": "lib/process-promises.js",
   "typings": "lib/process-promises.d.ts",
   "scripts": {
@@ -29,13 +29,13 @@
     "gulp-rimraf": "^0.2.0",
     "gulp-util": "^3.0.7",
     "jasmine": "^2.3.2",
-    "resolve": "^1.1.6",
     "split": "^1.0.0",
     "tsd": "^0.6.5",
     "typescript": "^1.6.2"
   },
   "dependencies": {
-    "q": "^1.4.1",
+    "bluebird": "^3.0.5",
+    "resolve": "^1.1.6",
     "stack-trace": "0.0.9"
   }
 }

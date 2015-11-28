@@ -1,5 +1,5 @@
 # process-promises
-Node child processes as Q promises
+Node child processes as promises
 
 # Installation
 ```
@@ -16,11 +16,7 @@ Runs a command in a shell and buffers the output.
 import { exec } from 'process-promises';
 
 exec('node ./node_modules/gulp/bin/gulp.js default')
-    .progress(info => {
-        if (info.process) {
-            console.log('Pid: ', info.process.pid);
-        }
-    })
+    .on('process', process => console.log('Pid: ', process.pid))
     .then(result => {
         console.log('stdout: ', result.stdout);
         console.log('stderr: ', result.stderr);
@@ -36,10 +32,8 @@ exec('node ./node_modules/gulp/bin/gulp.js default')
 var exec = require('process-promises').exec;
 
 exec('node ./node_modules/gulp/bin/gulp.js default')
-    .progress(function (info) {
-        if (info.process) {
-            console.log('Pid: ', info.process.pid);
-        }
+    .on('process', function(process) {
+        console.log('Pid: ', process.pid); 
     })
     .then(function (result) {
         console.log('stdout: ', result.stdout);
@@ -57,10 +51,10 @@ exec('node ./node_modules/gulp/bin/gulp.js default')
  * Runs a command in a shell and buffers the output.
  * @param command {string} - The command
  * @param options {ExecOptions} - Options
- * @returns {Promise<ExecResult>}
+ * @returns {PromiseWithEvents<ExecResult>}
  * @see {@link https://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback}
  */
-function exec(command: string, options?: ExecOptions): Q.Promise<ExecResult>;
+function exec(command: string, options?: ExecOptions): PromiseWithEvents<ExecResult>;
 
 interface ExecOptions {
     /** Current working directory of the child process */
@@ -86,11 +80,6 @@ interface ExecOptions {
     killSignal?: string;
 }
 
-interface ExecProgress {
-    /** The executing process */
-    process?: cp.ChildProcess;
-}
-
 interface ExecResult {
     /** The standard output emitted from the process as a string */
     stdout: string;
@@ -110,11 +99,7 @@ file directly. This makes it slightly leaner than exec().
 import { execFile } from 'process-promises';
 
 execFile(process.execPath, ['./node_modules/gulp/bin/gulp.js', 'default'])
-    .progress(info => {
-        if (info.process) {
-            console.log('Pid: ', info.process.pid);
-        }
-    })
+    .on('process', process => console.log('Pid: ', process.pid))
     .then(result => {
         console.log('stdout: ', result.stdout);
         console.log('stderr: ', result.stderr);
@@ -130,10 +115,8 @@ execFile(process.execPath, ['./node_modules/gulp/bin/gulp.js', 'default'])
 var execFile = require('process-promises').execFile;
 
 execFile(process.execPath, ['./node_modules/gulp/bin/gulp.js', 'default'])
-    .progress(function (info) {
-        if (info.process) {
-            console.log('Pid: ', info.process.pid);
-        }
+    .on('process', function(process) {
+        console.log('Pid: ', process.pid); 
     })
     .then(function (result) {
         console.log('stdout: ', result.stdout);
@@ -153,11 +136,11 @@ execFile(process.execPath, ['./node_modules/gulp/bin/gulp.js', 'default'])
  * @param file {string} - The file to execute
  * @param args {string[]} - List of string arguments
  * @param options {ExecFileOptions} - Options
- * @returns {Promise<ExecResult>}
+ * @returns {PromiseWithEvents<ExecResult>}
  * @see {@link https://nodejs.org/api/child_process.html#child_process_child_process_execfile_file_args_options_callback}
  */
-function execFile(file: string, options?: ExecFileOptions): Q.Promise<ExecResult>;
-function execFile(file: string, args?: string[], options?: ExecFileOptions): Q.Promise<ExecResult>;
+function execFile(file: string, options?: ExecFileOptions): PromiseWithEvents<ExecResult>;
+function execFile(file: string, args?: string[], options?: ExecFileOptions): PromiseWithEvents<ExecResult>;
 
 interface ExecFileOptions {
     /** Current working directory of the child process */
@@ -201,17 +184,9 @@ omitted, args defaults to an empty Array.
 import { spawn } from 'process-promises';
 
 spawn(process.execPath, ['./node_modules/gulp/bin/gulp.js', 'default'])
-    .progress(info => {
-        if (info.process) {
-            console.log('Pid: ', info.process.pid);
-        }
-        if (info.stdout) {
-            console.log('stdout: ', info.stdout);
-        }
-        if (info.stderr) {
-            console.log('stderr: ', info.stderr);
-        }
-    })
+    .on('process', process => console.log('Pid: ', process.pid))
+    .on('stdout', line => console.log('stdout: ', line))
+    .on('stderr', line => console.log('stderr: ', line))
     .then(result => {
         console.log('Exit code: ' + result.exitCode);
     })
@@ -226,16 +201,14 @@ spawn(process.execPath, ['./node_modules/gulp/bin/gulp.js', 'default'])
 var execFile = require('process-promises').execFile;
 
 spawn(process.execPath, ['./node_modules/gulp/bin/gulp.js', 'default'])
-    .progress(function (info) {
-        if (info.process) {
-            console.log('Pid: ', info.process.pid);
-        }
-        if (info.stdout) {
-            console.log('stdout: ', info.stdout);
-        }
-        if (info.stderr) {
-            console.log('stderr: ', info.stderr);
-        }
+    .on('process', function(process) {
+        console.log('Pid: ', process.pid);
+    })
+    .on('stdout', function(line) {
+        console.log('stdout: ', line); 
+    })
+    .on('stderr', function(line) {
+        console.log('stdout: ', line); 
     })
     .then(function (result) {
         console.log('Exit code: ' + result.exitCode);
@@ -254,11 +227,11 @@ spawn(process.execPath, ['./node_modules/gulp/bin/gulp.js', 'default'])
  * @param command {string} - The file to execute
  * @param args {string[]} - List of string arguments
  * @param options {SpawnOptions} - Options
- * @returns {Promise<SpawnResult>}
+ * @returns {PromiseWithEvents<SpawnResult>}
  * @see {@link https://nodejs.org/api/child_process.html#child_process_child_process_spawn_command_args_options}
  */
-function spawn(command: string, options?: SpawnOptions): Q.Promise<SpawnResult>;
-function spawn(command: string, args?: string[], options?: SpawnOptions): Q.Promise<SpawnResult>;
+function spawn(command: string, options?: SpawnOptions): PromiseWithEvents<SpawnResult>;
+function spawn(command: string, args?: string[], options?: SpawnOptions): PromiseWithEvents<SpawnResult>;
 
 interface SpawnOptions {
     /** Current working directory of the child process */
@@ -279,15 +252,6 @@ interface SpawnOptions {
      * @see {@link https://nodejs.org/api/child_process.html#child_process_options_detached}
      */
     detached?: boolean;
-}
-
-interface SpawnProgress {
-    /** The executing process */
-    process?: cp.ChildProcess;
-    /** One line of from the process' standard output */
-    stdout?: string;
-    /** One line of from the process' standard error */
-    stderr?: string;
 }
 
 interface SpawnResult {
@@ -311,17 +275,9 @@ This function calls spawn - not [child_process.fork](https://nodejs.org/api/chil
 import { fork } from 'process-promises';
 
 fork('gulp/bin/gulp.js', ['default'])
-    .progress(info => {
-        if (info.process) {
-            console.log('Pid: ', info.process.pid);
-        }
-        if (info.stdout) {
-            console.log('stdout: ', info.stdout);
-        }
-        if (info.stderr) {
-            console.log('stderr: ', info.stderr);
-        }
-    })
+    .on('process', process => console.log('Pid: ', process.pid))
+    .on('stdout', line => console.log('stdout: ', line))
+    .on('stderr', line => console.log('stderr: ', line))
     .then(result => {
         console.log('Exit code: ' + result.exitCode);
     })
@@ -336,16 +292,14 @@ fork('gulp/bin/gulp.js', ['default'])
 var execFile = require('process-promises').execFile;
 
 fork('gulp/bin/gulp.js', ['default'])
-    .progress(function (info) {
-        if (info.process) {
-            console.log('Pid: ', info.process.pid);
-        }
-        if (info.stdout) {
-            console.log('stdout: ', info.stdout);
-        }
-        if (info.stderr) {
-            console.log('stderr: ', info.stderr);
-        }
+    .on('process', function(process) {
+        console.log('Pid: ', process.pid);
+    })
+    .on('stdout', function(line) {
+        console.log('stdout: ', line); 
+    })
+    .on('stderr', function(line) {
+        console.log('stdout: ', line); 
     })
     .then(function (result) {
         console.log('Exit code: ' + result.exitCode);
@@ -366,11 +320,11 @@ fork('gulp/bin/gulp.js', ['default'])
  * @param modulePath {string} - The module to execute with node
  * @param args {string[]} - List of string arguments
  * @param options {SpawnOptions} - Options
- * @returns {Promise<SpawnResult>}
+ * @returns {PromiseWithEvents<SpawnResult>}
  * @see {@link https://nodejs.org/api/child_process.html#child_process_child_process_spawn_command_args_options}
  */
-function fork(modulePath: string, options?: SpawnOptions): Q.Promise<SpawnResult>;
-function fork(modulePath: string, args?: string[], options?: SpawnOptions): Q.Promise<SpawnResult>;
+function fork(modulePath: string, options?: SpawnOptions): PromiseWithEvents<SpawnResult>;
+function fork(modulePath: string, args?: string[], options?: SpawnOptions): PromiseWithEvents<SpawnResult>;
 
 interface SpawnOptions {
     /** Current working directory of the child process */
@@ -391,15 +345,6 @@ interface SpawnOptions {
      * @see {@link https://nodejs.org/api/child_process.html#child_process_options_detached}
      */
     detached?: boolean;
-}
-
-interface SpawnProgress {
-    /** The executing process */
-    process?: cp.ChildProcess;
-    /** One line of from the process' standard output */
-    stdout?: string;
-    /** One line of from the process' standard error */
-    stderr?: string;
 }
 
 interface SpawnResult {
