@@ -29,13 +29,13 @@
     "gulp-rimraf": "^0.2.0",
     "gulp-util": "^3.0.7",
     "jasmine": "^2.3.2",
-    "split": "^1.0.0",
     "tsd": "^0.6.5",
     "typescript": "^1.6.2"
   },
   "dependencies": {
     "bluebird": "^3.0.5",
     "resolve": "^1.1.6",
+	"split": "^1.0.0",
     "stack-trace": "0.0.9"
   }
 }
